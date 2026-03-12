@@ -89,6 +89,36 @@ productsCommand
   });
 
 productsCommand
+  .command("price-create <productId>")
+  .description("Create a price for a product")
+  .requiredOption("--name <name>", "Price name")
+  .requiredOption("--amount <cents>", "Amount in cents")
+  .option("--currency <code>", "Currency code", "USD")
+  .option("--type <type>", "Price type (one_time|recurring)", "one_time")
+  .option("--json", "Output raw JSON")
+  .action(async (productId, opts) => {
+    const body: Record<string, unknown> = {
+      name: opts.name,
+      amount: Number(opts.amount),
+      currency: opts.currency,
+      type: opts.type,
+    };
+    const data = await client().createPrice(productId, body);
+    print(data.price ?? data, opts);
+  });
+
+productsCommand
+  .command("collection-create")
+  .description("Create a product collection")
+  .requiredOption("--name <name>", "Collection name")
+  .option("--json", "Output raw JSON")
+  .action(async (opts) => {
+    const body: Record<string, unknown> = { name: opts.name };
+    const data = await client().createProductCollection(body);
+    print(data.collection ?? data, opts);
+  });
+
+productsCommand
   .command("collections")
   .description("List product collections")
   .option("-l, --limit <n>", "Limit results", "25")

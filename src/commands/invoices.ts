@@ -73,3 +73,58 @@ invoicesCommand
     const data = await client().sendInvoice(id, body);
     print(data, opts);
   });
+
+invoicesCommand
+  .command("delete <id>")
+  .description("Delete an invoice")
+  .option("--json", "Output raw JSON")
+  .action(async (id, opts) => {
+    const data = await client().deleteInvoice(id);
+    print(data, opts);
+  });
+
+invoicesCommand
+  .command("void <id>")
+  .description("Void an invoice")
+  .option("--json", "Output raw JSON")
+  .action(async (id, opts) => {
+    const data = await client().voidInvoice(id);
+    print(data, opts);
+  });
+
+invoicesCommand
+  .command("record-payment <id>")
+  .description("Record a manual payment on an invoice")
+  .requiredOption("--amount <cents>", "Amount in cents")
+  .option("--method <method>", "Payment method (cash|check|other)", "cash")
+  .option("--note <text>", "Payment note")
+  .option("--json", "Output raw JSON")
+  .action(async (id, opts) => {
+    const body: Record<string, unknown> = {
+      amount: Number(opts.amount),
+      method: opts.method,
+    };
+    if (opts.note) body.notes = opts.note;
+    const data = await client().recordPayment(id, body);
+    print(data, opts);
+  });
+
+invoicesCommand
+  .command("number")
+  .description("Generate the next invoice number")
+  .option("--json", "Output raw JSON")
+  .action(async (opts) => {
+    const data = await client().generateInvoiceNumber();
+    print(data, opts);
+  });
+
+invoicesCommand
+  .command("templates")
+  .description("List invoice templates")
+  .option("-l, --limit <n>", "Limit results", "25")
+  .option("--json", "Output raw JSON")
+  .action(async (opts) => {
+    const params: Record<string, string> = { limit: opts.limit };
+    const data = await client().listInvoiceTemplates(params);
+    print(data.templates ?? data, opts);
+  });

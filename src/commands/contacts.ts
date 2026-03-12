@@ -115,3 +115,43 @@ contactsCommand
       print(data.notes ?? data, opts);
     }
   });
+
+contactsCommand
+  .command("upsert")
+  .description("Create or update a contact (matches on email/phone)")
+  .requiredOption("--email <email>", "Email address")
+  .option("--firstName <name>", "First name")
+  .option("--lastName <name>", "Last name")
+  .option("--phone <phone>", "Phone number")
+  .option("--tags <tags>", "Comma-separated tags")
+  .option("--json", "Output raw JSON")
+  .action(async (opts) => {
+    const body: Record<string, unknown> = {};
+    if (opts.email) body.email = opts.email;
+    if (opts.firstName) body.firstName = opts.firstName;
+    if (opts.lastName) body.lastName = opts.lastName;
+    if (opts.phone) body.phone = opts.phone;
+    if (opts.tags) body.tags = opts.tags.split(",");
+    const data = await client().upsertContact(body);
+    print(data.contact ?? data, opts, "contacts");
+  });
+
+contactsCommand
+  .command("tasks <id>")
+  .description("List or create tasks on a contact")
+  .option("--add <title>", "Create a task with this title")
+  .option("--due <date>", "Due date (ISO 8601)")
+  .option("--description <text>", "Task description")
+  .option("--json", "Output raw JSON")
+  .action(async (id, opts) => {
+    if (opts.add) {
+      const body: Record<string, unknown> = { title: opts.add };
+      if (opts.due) body.dueDate = opts.due;
+      if (opts.description) body.description = opts.description;
+      const data = await client().createContactTask(id, body);
+      print(data, opts);
+    } else {
+      const data = await client().getContactTasks(id);
+      print(data.tasks ?? data, opts);
+    }
+  });

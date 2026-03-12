@@ -17,6 +17,7 @@ import { paymentsCommand } from "./commands/payments.js";
 import { mediaCommand } from "./commands/media.js";
 import { emailsCommand } from "./commands/emails.js";
 import { objectsCommand } from "./commands/objects.js";
+import { estimatesCommand } from "./commands/estimates.js";
 
 program
   .name("ghl")
@@ -46,6 +47,7 @@ program.addCommand(paymentsCommand);
 program.addCommand(mediaCommand);
 program.addCommand(emailsCommand);
 program.addCommand(objectsCommand);
+program.addCommand(estimatesCommand);
 
 program.parseAsync().catch((err) => {
   if (err.response?.data) {
