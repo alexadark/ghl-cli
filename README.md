@@ -7,7 +7,7 @@ Command-line interface for GoHighLevel API v2. JSON output by default, pipe-frie
 ## Install
 
 ```bash
-npm install -g @alexadark/ghl-cli
+npm install -g gohighlevel-cli
 ```
 
 Or clone and link locally:
