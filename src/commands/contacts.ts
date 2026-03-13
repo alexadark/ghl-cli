@@ -145,7 +145,7 @@ contactsCommand
   .option("--json", "Output raw JSON")
   .action(async (id, opts) => {
     if (opts.add) {
-      const body: Record<string, unknown> = { title: opts.add };
+      const body: Record<string, unknown> = { title: opts.add, completed: false };
       if (opts.due) body.dueDate = opts.due;
       if (opts.description) body.description = opts.description;
       const data = await client().createContactTask(id, body);

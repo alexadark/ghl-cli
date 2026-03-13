@@ -1,6 +1,6 @@
 {
-  "name": "@alexadark/ghl-cli",
-  "version": "0.1.0",
+  "name": "gohighlevel-cli",
+  "version": "0.1.1",
   "description": "CLI tool for GoHighLevel API v2",
   "type": "module",
   "bin": {
@@ -17,6 +17,13 @@
     "crm",
     "cli"
   ],
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alexadark/ghl-cli"
+  },
   "license": "MIT",
   "dependencies": {
     "axios": "^1.7.0",

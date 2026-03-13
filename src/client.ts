@@ -24,6 +24,10 @@ export class GhlClient {
     return { headers: { Version: CONVERSATIONS_VERSION } };
   }
 
+  private calHeaders(): AxiosRequestConfig {
+    return { headers: { Version: CONVERSATIONS_VERSION } };
+  }
+
   // ── Contacts ──────────────────────────────────────────
 
   searchContacts = (params: Record<string, string | number> = {}) =>
@@ -75,7 +79,7 @@ export class GhlClient {
   searchOpportunities = (params: Record<string, string | number> = {}) =>
     this.http
       .get("/opportunities/", {
-        params: { location_id: this.locationId, ...params },
+        params: { locationId: this.locationId, ...params },
       })
       .then((r) => r.data);
 
@@ -101,7 +105,7 @@ export class GhlClient {
   getPipelines = () =>
     this.http
       .get("/opportunities/pipelines", {
-        params: { location_id: this.locationId },
+        params: { locationId: this.locationId },
       })
       .then((r) => r.data);
 
@@ -110,7 +114,7 @@ export class GhlClient {
   searchConversations = (params: Record<string, string | number> = {}) =>
     this.http
       .get("/conversations/search", {
-        params: { location_id: this.locationId, ...params },
+        params: { locationId: this.locationId, ...params },
         ...this.convHeaders(),
       })
       .then((r) => r.data);
@@ -159,12 +163,15 @@ export class GhlClient {
 
   getCalendars = () =>
     this.http
-      .get("/calendars", { params: { location_id: this.locationId } })
+      .get("/calendars/", {
+        params: { locationId: this.locationId },
+        ...this.calHeaders(),
+      })
       .then((r) => r.data);
 
   getCalendarGroups = () =>
     this.http
-      .get("/calendars/groups", { params: { location_id: this.locationId } })
+      .get("/calendars/groups", { params: { locationId: this.locationId } })
       .then((r) => r.data);
 
   getCalendarEvents = (
